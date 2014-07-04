@@ -1,6 +1,5 @@
 package com.hendyirawan.gggettingstarted.simple;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -13,6 +12,7 @@ import org.gridgain.grid.compute.GridComputeTaskSplitAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.FluentIterable;
 
 public class JavaMapReduce {
@@ -28,8 +28,8 @@ public class JavaMapReduce {
 				@Override
 				protected Collection<? extends GridComputeJob> split(
 						int gridSize, String arg) throws GridException {
-					String[] words = arg.split(" ");
-					return FluentIterable.from(Arrays.asList(words))
+					Iterable<String> words = Splitter.on(' ').split(arg);
+					return FluentIterable.from(words)
 						.<GridComputeJob>transform((it) -> new GridComputeJob() {
 							@Override
 							public Object execute() throws GridException {
